@@ -126,8 +126,8 @@ checkpoint = tf.train.Checkpoint(generator_optimizer=generator_optimizer,
 print('Checkpoint criado: ', checkpoint)
 
 ###############################################################################
-# DEFINIÇÃO DO CICLO DE TREINAMENTOP
-#
+# DEFINIÇÃO DO CICLO DE TREINAMENTO
+# Vamos treinar em lotes de 50 imagens e cada lote gera 16 exemplos
 
 EPOCHS = 50
 noise_dim = 100
@@ -135,4 +135,5 @@ num_examples_to_generate = 16
 
 # seed para gerador aleatório
 seed = tf.random.normal([num_examples_to_generate, noise_dim])
-print('Semente aleatória criada: ', seed)
+print('Semente aleatória criada com {:d} elementos por amostra e {:d} amostras.'.format(seed.numpy().shape[0], seed.numpy().shape[1]))
+print(seed.numpy()[:,:])

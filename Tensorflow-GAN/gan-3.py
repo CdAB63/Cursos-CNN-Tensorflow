@@ -45,6 +45,14 @@ labels = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ]
 # PREPARE O TRAINING SET
 #
 # BATCHES
+# 
+# Aqui dividimos o training set em "slices" e para evitar vies fazemos um 
+# embaralhamento (shuffle)
+#
+# É algo equivalente ao que fazemos no darknet quando definimos os parâmetros
+# 'batches' e 'subdivisions'. O darknet faz o shuffle (embaralhamento das
+# imagens de treino automaticamente, mas ainda assim eu já forneço a lista de
+# arquivos do training set embaralhada para aumentar a entropia
 #
 
 BUFFER_SIZE = train_images.shape[0]
@@ -56,3 +64,22 @@ print('Batch  size: ', BATCH_SIZE)
 train_dataset = tf.data.Dataset.from_tensor_slices(train_images).shuffle(BUFFER_SIZE).batch(BATCH_SIZE)
 
 print('Train dataset shape: ', train_dataset)
+
+while True:
+    print('Entre o número de um slice (imagem) -1 para terminar: ', end='')
+    try:
+        idx = int(input())
+    except:
+        print('Precisa ser número')
+        continue
+    if idx == -1:
+        break
+    try:
+        img = list(train_dataset)[0][idx]
+        plt.imshow(img)
+        plt.title('Imagem #'+str(idx))
+        plt.show()
+    except Exception as e:
+        print('Algo errado aconteceu. Índice fora do range?')
+        print(str(e))
+        continue

@@ -87,6 +87,9 @@ print('Discriminador criado: ', decision)
 
 ###############################################################################
 # IMPORTE AS FUNÇÕES DE PERDA
+# Como vamos fazer o treinamento (por back propagation) precisamos definir as
+# funções de perda tanto para o discriminador quanto para o gerador
+# afinal o sistema é treinado com as duas redes (veja figura na apresentação)
 #
 import discriminator_generator_losses
 from discriminator_generator_losses import discriminator_loss
@@ -95,7 +98,7 @@ from discriminator_generator_losses import generator_loss
 ###############################################################################
 # OTIMIZADORES
 #
-generator_optimizer = tf.keras.optimizers.Adam(1e-4)
+generator_optimizer     = tf.keras.optimizers.Adam(1e-4)
 discriminator_optimizer = tf.keras.optimizers.Adam(1e-4)
 
 ###############################################################################

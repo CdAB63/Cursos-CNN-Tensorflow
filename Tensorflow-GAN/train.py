@@ -9,11 +9,42 @@ import time
 import matplotlib.pyplot as plt
 import os
 
+###############################################################################
+# Passo de treinamento:
+#      * Cria uma imagem ruído (noise)
+#      * Usa o gerador para criar uma imagem a partir do ruído
+#      * Mede a qualidade do output real
+#      * Mede a qualidade do output fake
+#      * Faz o cálculo dos gradientes
+#           + gerador (gen_loss)
+#           + discriminador (disc_loss)
 @tf.function
 def train_step(images, generator, generator_optimizer, discriminator, discriminator_optimizer, batch_size, noise_dim):
     
     noise = tf.random.normal([batch_size, noise_dim])
     
+    """
+
+
+With eager execution enabled, Tensorflow will calculate the values of tensors as they occur in your code. 
+This means that it won't precompute a static graph for which inputs are fed in through placeholders. This means 
+to back propagate errors, you have to keep track of the gradients of your computation and then apply these 
+gradients to an optimiser.
+
+This is very different from running without eager execution, where you would build a graph and then simply use 
+sess.run to evaluate your loss and then pass this into an optimiser directly.
+
+Fundamentally, because tensors are evaluated immediately, you don't have a graph to calculate gradients and so 
+you need a gradient tape. It is not so much that it is just used for visualisation, but more that you cannot 
+implement a gradient descent in eager mode without it.
+
+Obviously, Tensorflow could just keep track of every gradient for every computation on every tf.Variable. However, 
+that could be a huge performance bottleneck. They expose a gradient tape so that you can control what 
+areas of your code need the gradient information. Note that in non-eager mode, this will be statically 
+determined based on the computational branches that are descendants of your loss but in eager mode there is no 
+static graph and so no way of knowing.
+
+    """
     with tf.GradientTape() as gen_tape, tf.GradientTape() as disc_tape:
         generated_images = generator(noise, training=True)
 
@@ -31,6 +62,13 @@ def train_step(images, generator, generator_optimizer, discriminator, discrimina
     discriminator_optimizer.apply_gradients(zip(gradients_of_discriminator, discriminator.trainable_variables))
 
 
+###############################################################################
+# TREINAMENTO
+#
+# Basicamente, para o número de ciclos (epochs) especificado e para o batch de
+# imagens neste ciclo, realize um passo de treinamento (train_step)
+#
+# 
 def train(dataset, epochs, generator, generator_optimizer, discriminator, discriminator_optimizer, batch_size, noise_dim, seed, checkpoint, checkpoint_prefix):
 
     for epoch in range(epochs):
@@ -54,6 +92,9 @@ def train(dataset, epochs, generator, generator_optimizer, discriminator, discri
     display.clear_output(wait=True)
     generate_and_save_images(generator, epochs, seed)
 
+###############################################################################
+# Gere imagens e salve
+#
 def generate_and_save_images(model, epoch, test_input):
 
     if not os.path.exists('./images'):

@@ -27,6 +27,11 @@ from IPython import display
 # Aqui fazemos algo diferente do exemplo anterior, onde normalizamos entre 0 e
 # 1... Neste caso vamos normalizar as imagens entre -1.0 e 1.0
 #
+# É importante ter em mente que na maior parte dos casos as imagens de treino
+# tem que ser condicionadas porque ou foram geradas para casos gerais ou
+# foram geradas tendo em vista requisitos de outros sistemas
+#
+# No caso do mnist as imagens são B&W e 1 plano de cor
 ###############################################################################
 
 train_images = train_images.reshape(train_images.shape[0], 28, 28, 1).astype('float32')

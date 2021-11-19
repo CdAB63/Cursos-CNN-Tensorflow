@@ -79,9 +79,12 @@ plt.show()
 # (VERDADEIRO/FALSO)
 #
 
+# Aqui criamos o modelo do DISCRIMINADOR
 from make_discriminator_model import make_discriminator_model
 
 discriminator = make_discriminator_model()
+discriminator.summary()
+
 decision = discriminator(generated_image)
-print(decision)
+print('\nResultado do ruído submetido ao discriminador: {:4f}'.format(abs(decision.numpy()[0][0])))
 

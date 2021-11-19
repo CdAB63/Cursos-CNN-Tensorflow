@@ -58,18 +58,27 @@ train_dataset = tf.data.Dataset.from_tensor_slices(train_images).shuffle(BUFFER_
 ###############################################################################
 # MODELO
 #
+# Aqui criamos o modelo do gerador
+#
 
 from make_generator_model import make_generator_model
 
 generator = make_generator_model()
 
+# Imprima o modelo do gerador
+generator.summary()
+
 ###############################################################################
 # CRIE UMA IMAGEM PARA ADVERSARIAL
 #
 
+# CRIAMOS UM RUÍDO (noise)
 noise = tf.random.normal([1, 100])
+
+# APLICAMOS O RUÍDO AO GERADOR (ainda não treinado)
 generated_image = generator(noise, training=False)
 
+# OBTEMOS UMA IMAGEM GERADA
 plt.imshow(generated_image[0, :, :, 0], cmap='gray')
 plt.title('Imagem gerada com ruído aleatório')
 plt.show()
