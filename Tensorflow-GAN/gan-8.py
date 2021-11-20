@@ -132,7 +132,7 @@ print('Checkpoint criado: ', checkpoint)
 # DEFINIÇÃO DO CICLO DE TREINAMENTO
 #
 
-EPOCHS = 50
+EPOCHS = 2500
 noise_dim = 100
 num_examples_to_generate = 16
 

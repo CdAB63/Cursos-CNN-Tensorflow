@@ -89,6 +89,10 @@ def train(dataset, epochs, generator, generator_optimizer, discriminator, discri
         print('Tempo para época {:5d} é {:.4f} segundos'.format(epoch + 1, time.time() - start - 1))
 
     # Época final
+    # Salvar os modelos
+    generator.save('generator.h5')
+    discriminator.save('discriminator.h5')
+    # Clear display
     display.clear_output(wait=True)
     generate_and_save_images(generator, epochs, seed)
 
